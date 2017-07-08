@@ -1,6 +1,5 @@
 import requests
 import xml.etree.ElementTree as ET
-import pprint
 
 response = requests.get('http://www.ibiblio.org/xml/examples/shakespeare/macbeth.xml')
 tree = ET.fromstring(response.content)
@@ -37,7 +36,6 @@ def choose():
 
     response = requests.get(url)
     tree = ET.fromstring(response.content)
-    pp = pprint.PrettyPrinter(indent=4)
     for key, value in acts(tree):
         print("%s had %s" % (key, value))
 
