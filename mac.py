@@ -10,14 +10,15 @@ def speeches(act, values):
     for x in speech:
         speakers = x.findall('SPEAKER')
         lines = x.findall('LINE')
-        for s in speakers:
-            if s.text == 'ALL':
+        for speaker in speakers:
+            if speaker.text == 'ALL':
                 pass
-            elif s.text.title() in values:
-                values[s.text.title()] += len(lines)
+            elif speaker.text.title() in values:
+                values[speaker.text.title()] += len(lines)
             else:
-                values[s.text.title()] = len(lines)
+                values[speaker.text.title()] = len(lines)
     return values
+
 
 def acts(tree):
     values = {}
@@ -37,13 +38,9 @@ def choose():
     response = requests.get(url)
     tree = ET.fromstring(response.content)
     pp = pprint.PrettyPrinter(indent=4)
-    pp.pprint(acts(tree))
+    for key, value in acts(tree):
+        print("%s had %s" % (key, value))
+
 
 if __name__ == '__main__':
     choose()
-
-choose()
-
-
-
-
