@@ -1,33 +1,48 @@
+import requests
 import xml.etree.ElementTree as ET
+import pprint
 
-tree = ET.parse('macbeth.xml')
-values = {}
+response = requests.get('http://www.ibiblio.org/xml/examples/shakespeare/macbeth.xml')
+tree = ET.fromstring(response.content)
 
-def speeches(act):
+def speeches(act, values):
     speech = act.findall('SCENE/SPEECH')
     for x in speech:
-        speaker = x.findall('SPEAKER')
-        line = x.findall('LINE')
-        speakers(speaker, line)
+        speakers = x.findall('SPEAKER')
+        lines = x.findall('LINE')
+        for s in speakers:
+            if s.text == 'ALL':
+                pass
+            elif s.text.title() in values:
+                values[s.text.title()] += len(lines)
+            else:
+                values[s.text.title()] = len(lines)
+    return values
+
+def acts(tree):
+    values = {}
+    for child in tree:
+        if child.tag == "ACT": 
+            speeches(child, values)
+    return sorted(values.items(), key=lambda character: character[1], reverse=True)
 
 
-def speakers(speaker, line):
-    for s in speaker:
-        if s.text == 'ALL':
+def choose():
+    url = input("Enter the play's url (leave blank for Macbeth): ")
+    if len(url) > 0:
             pass
-        elif s.text.title() in values:
-            values[s.text.title()] += len(line)
-        else:
-            values[s.text.title()] = len(line)
+    else:
+        url = 'http://www.ibiblio.org/xml/examples/shakespeare/macbeth.xml'
 
-def acts(root):
-    for child in root:
-        if child.tag == "ACT":
-            speeches(child)
+    response = requests.get(url)
+    tree = ET.fromstring(response.content)
+    pp = pprint.PrettyPrinter(indent=4)
+    pp.pprint(acts(tree))
 
-acts(tree.getroot())
-print(values)
+if __name__ == '__main__':
+    choose()
 
+choose()
 
 
 
