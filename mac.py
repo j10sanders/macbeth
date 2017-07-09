@@ -38,16 +38,24 @@ def choose():
     try:
         response = requests.get(url)
     except requests.exceptions.RequestException as e:
-        print(e)
+        return [str(e)]
         sys.exit(1)
     try:
         tree = ET.fromstring(response.content)
     except ET.ParseError:
-        print("That doc isn't the right xml format :(")
+        return ["That url doesn't have the right xml format :("]
         sys.exit(1)
+        
+    answer = []
     for key, value in acts(tree):
-        print("%s has %s" % (key, value))
+        answer.append("%s has %s" % (key, value))
+    return answer
 
+
+def run():
+    answer = choose()
+    for x in answer:
+        print(x)
 
 if __name__ == '__main__':
-    choose()
+    run()
