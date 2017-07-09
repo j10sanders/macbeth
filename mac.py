@@ -1,5 +1,6 @@
 import requests
 import xml.etree.ElementTree as ET
+import sys
 
 response = requests.get('http://www.ibiblio.org/xml/examples/shakespeare/macbeth.xml')
 tree = ET.fromstring(response.content)
@@ -34,8 +35,16 @@ def choose():
     else:
         url = 'http://www.ibiblio.org/xml/examples/shakespeare/macbeth.xml'
 
-    response = requests.get(url)
-    tree = ET.fromstring(response.content)
+    try:
+        response = requests.get(url)
+    except requests.exceptions.RequestException as e:
+        print(e)
+        sys.exit(1)
+    try:
+        tree = ET.fromstring(response.content)
+    except ET.ParseError:
+        print("That doc isn't the right xml format :(")
+        sys.exit(1)
     for key, value in acts(tree):
         print("%s has %s" % (key, value))
 
