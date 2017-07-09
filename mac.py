@@ -20,15 +20,22 @@ def speeches(act, result):
     return result
 
 
-def acts(tree):
+def parse_play():
+    tree = get_input()
+    if len(tree) == 1: # It's an error
+        return tree
     result = {}
     for child in tree:
         if child.tag == "ACT": 
             speeches(child, result)
-    return sorted(result.items(), key=lambda character: character[1], reverse=True)
+    lines = sorted(result.items(), key=lambda character: character[1], reverse=True)
+    answer = []
+    for key, value in lines:
+        answer.append("%s has %s" % (key, value))
+    return answer
 
 
-def choose():
+def get_input():
     url = input("Enter the play's url (leave blank for Macbeth): ")
     if len(url) > 0:
         pass
@@ -45,15 +52,11 @@ def choose():
     except ET.ParseError:
         return ["That url doesn't have the right xml format :("]
         sys.exit(1)
-        
-    answer = []
-    for key, value in acts(tree):
-        answer.append("%s has %s" % (key, value))
-    return answer
+    return tree
 
 
 def run():
-    answer = choose()
+    answer = parse_play()
     for x in answer:
         print(x)
 

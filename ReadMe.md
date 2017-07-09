@@ -13,7 +13,7 @@ Then run `py.test`.  This will display test results in your shell.  You can find
 
 ### Decisions and trade-offs:
 
-I thought there was a case to be made for a class based approach, but in an app this simple, I think it's best to keep things simple.  The code I use here is essentially identical to the code I use in the [webapp](https://github.com/j10sanders/macwebapp/blob/master/mac/macbeth.py).
+I thought there was a case to be made for a class based approach, but in an app this simple, I think it's best to keep things simple.  The code I use here is essentially identical to the code I use in the webapp, although I do the error handling outside the file, in the app's [views.py](https://github.com/j10sanders/macwebapp/blob/master/mac/views.py).
 
 [You can run the single-page webapp here.](https://zinc-shakespear.herokuapp.com/)  It may take a bit to start up, since I'm not paying heroku for hosting.  
 I did not focus on styling very much -- I opted to get this up and running in a hurry, since I'll be leaving for a funeral on Monday.  
