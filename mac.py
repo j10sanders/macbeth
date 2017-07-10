@@ -2,14 +2,11 @@ import requests
 import xml.etree.ElementTree as ET
 import sys
 
-response = requests.get('http://www.ibiblio.org/xml/examples/shakespeare/macbeth.xml')
-tree = ET.fromstring(response.content)
-
 def speeches(act, result):
     speech = act.findall('SCENE/SPEECH')
-    for x in speech:
-        speakers = x.findall('SPEAKER')
-        lines = x.findall('LINE')
+    for tag in speech:
+        speakers = tag.findall('SPEAKER')
+        lines = tag.findall('LINE')
         for speaker in speakers:
             if speaker.text == 'ALL':
                 pass
@@ -20,10 +17,13 @@ def speeches(act, result):
     return result
 
 
-def parse_play():
-    tree = get_input()
+def parse_play(tree=None):
+    if tree is None:
+        tree = get_input()
     if len(tree) == 1: # It's an error
         return tree
+    if len(tree) ==0:
+        return ["Error: no argument for XML tree"]
     result = {}
     for child in tree:
         if child.tag == "ACT": 
@@ -41,7 +41,6 @@ def get_input():
         pass
     else:
         url = 'http://www.ibiblio.org/xml/examples/shakespeare/macbeth.xml'
-
     try:
         response = requests.get(url)
     except requests.exceptions.RequestException as e:
@@ -57,8 +56,8 @@ def get_input():
 
 def run():
     answer = parse_play()
-    for x in answer:
-        print(x)
+    print('The amount of lines per character:', *answer, sep='\n')
+
 
 if __name__ == '__main__':
     run()
