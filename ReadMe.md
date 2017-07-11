@@ -9,7 +9,7 @@ From the root directory of the project, run `python shake.py run`.  This project
 
 ### Running Tests:
 
-Simply run `py.test`.  Test results will display test results in your shell.  You can find the tests in `shake_test.py`
+Simply run `py.test`.  Test results will display in your shell.  You can find the tests in `shake_test.py`
 
 ### Design Decisions:
 
