@@ -22,7 +22,7 @@ def parse_play(tree=None):
         tree = get_input()
     if len(tree) == 1: # It's an error
         return tree
-    if len(tree) ==0:
+    if len(tree) == 0:
         return ["Error: no argument for XML tree"]
     result = {}
     for child in tree:
