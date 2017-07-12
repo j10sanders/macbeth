@@ -20,10 +20,13 @@ def speeches(act, result):
 def parse_play(tree=None):
     if tree is None:
         tree = get_input()
-    if len(tree) == 1: # It's an error
-        return tree
-    if len(tree) == 0:
-        return ["Error: no argument for XML tree"]
+    if not hasattr(tree, 'tag'):
+        if len(tree) == 1: # It's an error
+            return tree
+        if len(tree) == 0:
+            return ["Error: no argument for XML tree"]
+        else:
+            return ["Error: no tag element on the input"]
     result = {}
     for child in tree:
         if child.tag == "ACT": 
